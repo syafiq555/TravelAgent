@@ -142,7 +142,7 @@ public class CustomerUI extends javax.swing.JFrame {
         customer.setBudgetPrice(budget);
         customer.setDate(targetDate);
         customer.setDestination(targetDestination);
-        customerAgent.
+        customerAgent.requestTravelTickets(customer);
     }//GEN-LAST:event_searchButtonActionPerformed
 
     /**

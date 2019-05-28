@@ -8,6 +8,8 @@ package travelagent;
 import behaviours.ReceiveMessage;
 import behaviours.ReceiveMessageTicket;
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import models.Ticket;
 import utils.YellowPage;
 
@@ -22,7 +24,17 @@ public class TicketAgent extends Agent{
         YellowPage yellowPage = new YellowPage();
         yellowPage.register(getAID().getName(), "ticket_agent", this);
         
-        addBehaviour(new ReceiveMessageTicket(this, tickets));
+        addBehaviour(new CyclicBehaviour(this) {
+            @Override
+            public void action() {
+                ACLMessage msg = receive();
+                if (msg != null) {
+                    
+                }
+                
+                block();
+            }
+        });
         
     }
 }
