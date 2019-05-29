@@ -10,29 +10,29 @@ package models;
  * @author User
  */
 public class Ticket {
-    private float price;
-    private String destination, date, packageName;
+    private String id;
+    private String price;
+    private String destination, date;
     public Ticket() {
         
     }
     
-    public Ticket(float price, String destination, String date, String packageName) {
+    public Ticket(String price, String destination, String date) {
         this.price = price;
         this.destination = destination;
-        this.packageName = packageName;
         this.date = date;
     }
     /**
      * @return the price
      */
-    public float getPrice() {
+    public String getPrice() {
         return price;
     }
 
     /**
      * @param price the price to set
      */
-    public void setPrice(float price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -65,16 +65,16 @@ public class Ticket {
     }
 
     /**
-     * @return the packageName
+     * @return the id
      */
-    public String getPackageName() {
-        return packageName;
+    public String getId() {
+        return id;
     }
 
     /**
-     * @param packageName the packageName to set
+     * @param id the id to set
      */
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -11,7 +11,8 @@ package models;
  */
 public class Customer {
     private String customerName, destination, date;
-    private float budgetPrice, depositPrice;
+    private String price, deposit;
+    private Ticket ticket;
     
     public Customer(){}
     
@@ -60,28 +61,47 @@ public class Customer {
     /**
      * @return the budgetPrice
      */
-    public float getBudgetPrice() {
-        return budgetPrice;
+    public String getPrice() {
+        return price;
     }
 
     /**
-     * @param budgetPrice the budgetPrice to set
+     * @param price
      */
-    public void setBudgetPrice(float budgetPrice) {
-        this.budgetPrice = budgetPrice;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     /**
      * @return the depositPrice
      */
-    public float getDepositPrice() {
-        return depositPrice;
+    public String getDeposit() {
+        return deposit;
     }
 
     /**
-     * @param depositPrice the depositPrice to set
+     * @param deposit
      */
-    public void setDepositPrice(float depositPrice) {
-        this.depositPrice = depositPrice;
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
+    }
+
+    /**
+     * @return the ticket
+     */
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    /**
+     * @param ticket the ticket to set
+     */
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+    
+    @Override
+    public String toString() {
+        return "Customer name: "+ customerName.substring(0,1) +", Ticket ID: " + ticket.getId() + ", Destination: "+ticket.getDestination() + ", Date: " +ticket.getDate()+", Price: "+ticket.getPrice();
     }
 }

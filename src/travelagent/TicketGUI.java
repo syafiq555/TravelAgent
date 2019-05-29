@@ -5,39 +5,38 @@
  */
 package travelagent;
 
-import jade.core.Agent;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import models.Ticket;
 
 /**
  *
  * @author User
  */
 public class TicketGUI extends javax.swing.JFrame {
-    private Agent agent;
-    DefaultListModel listModel;
+    private TicketAgent ticketAgent;
+    DefaultListModel<String> model;
 
     /**
      * Creates new form TicketGUI
      */
     public TicketGUI() {
         initComponents();
-        listModel = new DefaultListModel();
     }
     
     /**
      * Creates new form TicketGUI
      * @param agent
      */
-    public TicketGUI(Agent agent) {
+    public TicketGUI(TicketAgent agent) {
         initComponents();
-        this.agent = agent;
-        listModel = new DefaultListModel();
-        listModel.addElement("lol");
-        jList2 = new JList(listModel);
-        jList1 = new JList(listModel);
+        model = new DefaultListModel<>();
+        this.ticketAgent = agent;
+        jList2.setVisible(false);
 
     }
 
@@ -54,11 +53,9 @@ public class TicketGUI extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         priceLabel = new javax.swing.JLabel();
         destinationLabel = new javax.swing.JLabel();
-        packageLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         price = new javax.swing.JTextField();
         destination = new javax.swing.JTextField();
-        packageName = new javax.swing.JTextField();
         date = new javax.swing.JTextField();
         addTicketButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -78,8 +75,6 @@ public class TicketGUI extends javax.swing.JFrame {
 
         destinationLabel.setText("Destination");
 
-        packageLabel.setText("Package");
-
         jLabel1.setText("Date");
 
         price.setColumns(20);
@@ -96,20 +91,13 @@ public class TicketGUI extends javax.swing.JFrame {
             }
         });
 
-        packageName.setColumns(20);
-        packageName.addActionListener(new java.awt.event.ActionListener() {
+        addTicketButton.setText("Add Ticket");
+        addTicketButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                packageNameActionPerformed(evt);
+                addTicketButtonActionPerformed(evt);
             }
         });
 
-        addTicketButton.setText("Add Ticket");
-
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(jList2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,33 +105,31 @@ public class TicketGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(81, 81, 81)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(priceLabel)
                             .addComponent(destinationLabel)
-                            .addComponent(packageLabel)
                             .addComponent(jLabel1))
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(packageName)
                             .addComponent(destination)
                             .addComponent(price)
-                            .addComponent(date))
-                        .addGap(147, 147, 147)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(139, 139, 139)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(145, 145, 145)
+                        .addGap(109, 109, 109)
                         .addComponent(addTicketButton)))
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(116, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(priceLabel)
                             .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -153,18 +139,12 @@ public class TicketGUI extends javax.swing.JFrame {
                             .addComponent(destination, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(packageLabel)
-                            .addComponent(packageName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(38, 38, 38)
+                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addComponent(addTicketButton)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addGap(134, 134, 134))
         );
 
         pack();
@@ -178,10 +158,29 @@ public class TicketGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_destinationActionPerformed
 
-    private void packageNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_packageNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_packageNameActionPerformed
+    private void addTicketButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTicketButtonActionPerformed
+        jList2.setVisible(true);
+        Ticket ticket = new Ticket();
+        ticket.setDestination(destination.getText());
+        ticket.setDate(date.getText());
+        ticket.setPrice(price.getText());
+        ticketAgent.addTicket(ticket);
+        model.addElement("Destination: "+ticket.getDestination());
+        model.addElement("Date: "+ticket.getDate());
+        model.addElement("Price: "+ticket.getPrice());
+        model.addElement(" ");
+        jList2.setModel(model);
+        jList1.setModel(model);
+        this.clearField();
+    }//GEN-LAST:event_addTicketButtonActionPerformed
 
+    private void clearField() {
+        destination.setText("");
+        date.setText("");
+        price.setText("");
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -224,7 +223,17 @@ public class TicketGUI extends javax.swing.JFrame {
 	int centerY = (int)screenSize.getHeight() / 2;
 	setLocation(centerX - getWidth() / 2, centerY - getHeight() / 2);
 	super.setVisible(true);
-    }	
+    }
+    
+    private Ticket[] getTickets(){
+        if (ticketAgent.getTickets().isEmpty())
+            return null;
+        ArrayList<String> ticketNames = new ArrayList<>();
+        for(int i = 0; i < ticketAgent.getTickets().size(); i++) {
+            ticketNames.add(ticketAgent.getTickets().get(i).getDestination());
+        }
+        return (Ticket[])ticketNames.toArray();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTicketButton;
@@ -236,8 +245,6 @@ public class TicketGUI extends javax.swing.JFrame {
     private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel packageLabel;
-    private javax.swing.JTextField packageName;
     private javax.swing.JTextField price;
     private javax.swing.JLabel priceLabel;
     // End of variables declaration//GEN-END:variables

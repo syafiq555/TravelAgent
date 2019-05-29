@@ -7,7 +7,14 @@ package travelagent;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import models.Customer;
+import models.Ticket;
 
 /**
  *
@@ -15,6 +22,8 @@ import models.Customer;
  */
 public class CustomerUI extends javax.swing.JFrame {
     private CustomerAgent customerAgent;
+    Customer customer = new Customer();
+    DefaultListModel<String> model;
     /**
      * Creates new form NewJFrame
      */
@@ -25,6 +34,9 @@ public class CustomerUI extends javax.swing.JFrame {
     public CustomerUI(CustomerAgent ca) {
         initComponents();
         customerAgent = ca;
+        model = new DefaultListModel<>();
+        jList1.setVisible(false);
+        SelectButton.setVisible(false);
     }
 
     /**
@@ -41,8 +53,11 @@ public class CustomerUI extends javax.swing.JFrame {
         destination = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         date = new javax.swing.JTextField();
-        budgetPrice = new javax.swing.JTextField();
+        price = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        SelectButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 204));
@@ -67,7 +82,7 @@ public class CustomerUI extends javax.swing.JFrame {
             }
         });
 
-        budgetPrice.setColumns(15);
+        price.setColumns(15);
 
         searchButton.setBackground(new java.awt.Color(102, 255, 102));
         searchButton.setForeground(new java.awt.Color(0, 51, 51));
@@ -75,6 +90,17 @@ public class CustomerUI extends javax.swing.JFrame {
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(jList1);
+
+        SelectButton.setBackground(new java.awt.Color(102, 255, 102));
+        SelectButton.setForeground(new java.awt.Color(0, 51, 51));
+        SelectButton.setText("Select Ticket");
+        SelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectButtonActionPerformed(evt);
             }
         });
 
@@ -98,27 +124,42 @@ public class CustomerUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(searchButton)
-                            .addComponent(budgetPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(450, Short.MAX_VALUE))
+                            .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(SelectButton)
+                        .addGap(161, 161, 161))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(23, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(destination, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(budgetPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addComponent(searchButton)
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(destination, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchButton)
+                    .addComponent(SelectButton))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,17 +175,41 @@ public class CustomerUI extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
+        jList1.setVisible(true);
+        SelectButton.setVisible(true);
         String targetDestination = destination.getText();
         String targetDate = date.getText();
-        float budget = Float.parseFloat(budgetPrice.getText());
-        Customer customer = new Customer();
+        String bPrice = price.getText();
         customer.setCustomerName(customerAgent.getAID().getName());
-        customer.setBudgetPrice(budget);
+        customer.setPrice(bPrice);
         customer.setDate(targetDate);
         customer.setDestination(targetDestination);
         customerAgent.requestTravelTickets(customer);
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    private void SelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectButtonActionPerformed
+        String [] selectedArray = jList1.getSelectedValue().split(",");
+        int idIndex = selectedArray[0].indexOf(":");
+        String id = selectedArray[0].substring(idIndex+1);
+        System.out.println(id);
+        Ticket ticket = customerAgent.getTicketViaId(id);
+        customer.setTicket(ticket);
+        customerAgent.sendTicketToBuyAgent(customer);
+    }//GEN-LAST:event_SelectButtonActionPerformed
+
+    public void showTickets(ArrayList<Ticket> ticket){
+        model.clear();
+        for(int i = 0; i< ticket.size() ; i++){
+            model.addElement("id: " + ticket.get(i).getId() + ", Destination: "+ticket.get(i).getDestination() + ", Price: "+ticket.get(i).getPrice());
+        }
+            jList1.setModel(model);
+    }
+    
+    public void popAlert(String status) {
+        JOptionPane.showMessageDialog(null, "Your payment for the ticket you ordered is " + (status.equals("0") ? "Failure": "Successful"));
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -192,12 +257,15 @@ public class CustomerUI extends javax.swing.JFrame {
     }	
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField budgetPrice;
+    private javax.swing.JButton SelectButton;
     private javax.swing.JTextField date;
     private javax.swing.JTextField destination;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField price;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
 }
